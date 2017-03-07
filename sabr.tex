@@ -1,0 +1,220 @@
+\documentclass{article}
+%
+\usepackage{graphicx}
+\usepackage{amsfonts}
+\usepackage[toc,page]{appendix}
+\usepackage{mathabx}
+
+%
+\begin{document}
+%
+\title{Introduction to SABR Model}
+\author{Jean-Mathieu Vermosen}
+
+%\maketitle
+
+%\begin{abstract}
+%The abstract text goes here.
+%\end{abstract}
+
+\section{Introduction}
+\paragraph{} This is a short introduction to the SABR model developed by \cite{hagan2002}
+
+\section{The SABR Model}
+\subsection{The Model Stochastic diffferential equations}
+\paragraph{} The SABR dynamics is described by the following system
+
+\begin{eqnarray}
+    dF_t      & = & \sigma_t F_t^\beta dW_{1, t}\label{hagan:eq1}\\
+    d\sigma_t & = & \nu\sigma_t dW_{2, t}\label{hagan:eq2}\\
+	\left<W_{1}, W_{2}\right>_t & = & \rho dt\label{hagan:eq3}
+\end{eqnarray}
+
+\subsection{Derivation of the SABR formula}
+%
+\paragraph{} The SABR formula can be obtained following a few simple steps
+%
+\paragraph{Singular Perturbation Theory} Let $\epsilon > 0$ but "small". We rewrite $\sigma_t\rightarrow\epsilon\sigma_t$ and   $\nu\rightarrow\epsilon\nu$. The system (\ref{hagan:eq1}), (\ref{hagan:eq2}) and (\ref{hagan:eq3}) can be written as
+%
+\begin{eqnarray}
+    dF_t      & = & \epsilon\sigma_t C(F_t) dW_{1, t}\label{hagan_t:eq1}\\
+    d\sigma_t & = & \epsilon\nu\sigma_t dW_{2, t}\label{hagan_t:eq2}\\
+	\left<W_{1}, W_{2}\right>_t & = & \rho dt\label{hagan_t:eq3}
+\end{eqnarray}
+%
+We then analyze the \emph{distinguished limit} as $\epsilon \ll 1$. Also notice the analysis may be conducted with a general $C(F_t)$ function and be replaced by the power law on a later stage.
+\paragraph{Forward Kolmogorov Equation} Suppose the system is in a state $F_t = f, \sigma_t=s$  at date $t$. We define the probability density p such that
+%
+\begin{equation}
+p(t, f, s; T, F, S)dFdS = \mathbb P \left[F < F_T<F + dF, S < \sigma_T < S + dS\vert F_t = f, \sigma_t = s \right]
+\end{equation}
+%
+Then the function $p(T, F, S)$ satisfies the Forward Kolmogorov Equation
+%
+\begin{equation}
+\frac{\partial p}{\partial T} =\frac{1}{2}\epsilon^2S^2\frac{\partial^2 C^2(F)p}{\partial F^2} + \epsilon^2\rho\nu\frac{S^2 C^2(F)p}{\partial F\partial S} + \frac{1}{2}\epsilon^2\nu^2\frac{\partial^2 S^2 p}{\partial S^2}, T>t
+\end{equation}
+%
+with 
+\begin{equation}
+p = \delta(F-f)\delta(S-s), t = T
+\end{equation}
+%
+The value of an option with payoff $\Pi(f, s, t)$ is given by 
+%
+\begin{eqnarray}
+V(t, f, s) & = & \mathbb E \left[\Pi(f, t)\vert F_t = f, \sigma_t = s\right]\\
+& = & \int_{\mathbb R}\int_{\mathbb R} \Pi(f, s, t) p(t, f, s; T, F, S)dFdS
+\end{eqnarray}
+%
+For example, a european call with payoff $\Pi_C(f, s, t) = [f-K]^+$ would have a value
+%
+\begin{eqnarray}
+V_C(t, f, s) & = & \int_{\mathbb R}\int_K^{+\infty} [f-K] p(t, f, s; T, F, S)dFdS
+\end{eqnarray}
+%
+\section{The Heston Model}
+\paragraph{} Heston \cite{heston1993} proposed a different stochastic volatility model. In SABR terms, Heston assumes that $\beta = 1$ while $\sigma$ follows an Ornstrein-Uhlenbeck process: 
+
+\begin{eqnarray}
+    dF_t      & = & \sigma_t F_t dW_{1, t}\\
+    d\sigma_t^2 & = & \kappa\left[\theta - \sigma_t^2\right] + \nu\sigma_t dW_{2, t}\\
+	\left<W_{1}, W_{2}\right>_t & = & \rho dt
+\end{eqnarray}
+
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=3.0in]{myfigure}
+%    \caption{Simulation Results}
+%    \label{simulationfigure}
+%\end{figure}
+
+\section{Conclusion}
+%
+Write your conclusion here.
+%
+\begin{appendices}
+%
+\section{Perturbation method}
+%
+\paragraph{The Landau notation} Let $\phi, \psi$ two function defined on $D$. Let $x\in D$ be fixed. We say $\phi\lll\psi$ as $\epsilon\rightarrow\epsilon_0$ if given any $\delta(x)>0$, there exists a neighborhood $N_\delta\in\mathcal O(\epsilon_0)$ such that $|\phi|\leq\delta(x)|\psi|$ for all $\epsilon\in N_\delta$.
+\paragraph{} If the values $\delta, N_\delta$ can be found independently of the value of $x$, we say that the order relation holds \emph{uniformly in $D$}.
+%
+\subsection{Asymptotic sequences and expansions}
+\paragraph{} Consider a sequence $\{\phi_n(\epsilon)\}, n=1, 2, \ldots$ of function of $\epsilon$. Such a sequence is called asymptotic if
+%
+\begin{equation}
+%
+\phi_{n+1}(\epsilon) \lll \phi_n(\epsilon), \textrm{ as } \epsilon\rightarrow\epsilon_0, n=1, 2, \ldots\label{eq_1}
+%
+\end{equation}
+%
+If the sequence is infinite and the relation (\ref{eq_1}) holds uniformly, the sequence is said to be \emph{uniform in n}.\\
+%
+Examples of such sequences are:
+%
+\begin{eqnarray}
+%
+\phi_n(\epsilon) = (\epsilon-\epsilon_0)^n, \textrm{ as } \epsilon\rightarrow\epsilon_0\\
+\phi_n(\epsilon) = e^\epsilon\epsilon^{-\lambda_n}, \textrm{ as } \epsilon\rightarrow\infty, \lambda_{n+1} > \lambda_n
+%
+\end{eqnarray}
+%
+\paragraph{} A sum of terms of the form $\sum^N_{n=1}a_n(x)\phi_n(\epsilon)$ is called an \emph{asymptotic expansion of the function $f(x, \epsilon)$ to $N$ terms as $\epsilon\rightarrow\epsilon_0$ with respect to the sequence $\{\phi_n(\epsilon)\}$} if 
+%
+\begin{equation}
+%
+f(x, \epsilon) - \sum^M_{n=1}a_n(x)\phi_n(\epsilon) \lll \phi_M, \textrm{ as } \epsilon\rightarrow\epsilon_0, n=1, 2, \ldots\label{eq_a_1}
+%
+\end{equation}
+%
+for each $M=1, 2, \ldots, N$.
+%
+\subsection{An example}
+%
+\paragraph{} Consider the error function defined by
+%
+\begin{equation}
+\textrm{erf }\epsilon=1-\frac{2}{\sqrt{\pi}}\int^\infty_\epsilon e^{-t^2}dt
+\end{equation}
+%
+which by setting $t^2=\tau$ can be rewritten as
+%
+\begin{equation}
+\textrm{erf }\epsilon=1-\frac{1}{\sqrt{\pi}}\int^\infty_{\epsilon^2} e^{-\tau}\tau^{-1/2}d\tau\label{eq_a_2}
+\end{equation}
+%
+Aftr integrating by parts once, (\ref{eq_a_2}) becomes
+%
+\begin{equation}
+\textrm{erf }\epsilon=1-\frac{1}{\sqrt{\pi}}\left[\frac{e^{-\epsilon^2}}{\epsilon}-\frac{1}{2}\int^\infty_{\epsilon^2} e^{-\tau}\tau^{-3/2}d\tau\right]
+\end{equation}
+%
+which suggests repeting the process in order to generate an expansion in increasing powers of $\epsilon^{-1}$. Defining
+%
+\begin{equation}
+F_n(\epsilon)=\int^\infty_{\epsilon^2} e^{-\tau}\tau^{-(2n+1)/2}d\tau, n=0, 1, 2, \ldots
+\end{equation}
+%
+and integrating $F_n(\epsilon)$ by parts results in the recursion relation
+%
+\begin{equation}
+F_n(\epsilon)=\frac{e^{-\epsilon^2}}{\epsilon^{2n+1}} - \frac{(2n+1)}{2}F_{n+1}(\epsilon), n=0, 1, 2, \ldots
+\end{equation}
+%
+which can be used to calculate the following \emph{exact} result for $F_0$
+%
+\begin{eqnarray}
+%
+F_0(\epsilon)= & e^{-\epsilon^2}\left[\frac{1}{\epsilon}-\frac{1}{2\epsilon^3} + \frac{1.3}{2^2\epsilon^5} + \ldots + \frac{(-1)^{n-1}1.3.5\ldots(2n-3)}{2^{n-1}\epsilon^{2n-1}}\right]\nonumber \\
+& +(-1)^n\frac{1.3.5\ldots(2n - 1)}{2^n}F_n(\epsilon), n = 1, 2, \ldots\label{eq_a_3}
+%
+\end{eqnarray}
+%
+It remains to show that the bracketed expression in (\ref{eq_a_3}) is the asymptotic expansion of $F_0$, i.e. we must verify that (\ref{eq_a_1}) is satisfied, that is
+%
+\begin{equation}
+F_0(\epsilon) - e^{-\epsilon^2}\sum^M_{n=1}(-1)^{n-1}\frac{1.3.5\ldots(2n-3)}{2^{n-1}\epsilon^{2n-1}}\lll\epsilon^{-(2M-1)}e^{-\epsilon^2}
+\end{equation}
+%
+as $\epsilon\rightarrow\infty$. According to (\ref{eq_a_3}), this is equivalent to show that 
+%
+\begin{equation}
+(-1)^M\frac{1.3.5\ldots(2M-1)}{2^M}F_M(\epsilon) \lll \epsilon^{-(2M-1)}e^{-\epsilon^2}
+\end{equation}
+%
+as $\epsilon\rightarrow\infty$. We note that since for $\tau\in [\epsilon^2,\infty[$ we have $e^{-\tau}\tau^{-(2M + 1) / 2}\leq e^{-\tau}(\epsilon^2)^{(2M+1)/2}$,
+%
+\begin{equation}
+F_M(\epsilon) \leq\frac{1}{\epsilon^{2M+1}}\int^\infty_{\epsilon^2}e^{-\tau}d\tau = \frac{e^{-\epsilon^2}}{\epsilon^{2M+1}}.
+\end{equation}
+%
+Therefore
+%
+\begin{equation}
+\Big\vert\epsilon^{(2M-1)}e^{\epsilon^2}(-1)^M\frac{1.3.5\ldots(2M-1)}{2^M}F_M(\epsilon)\Big\vert \leq \frac{1.3.5\ldots(2M-1)}{2^M\epsilon^2} 
+\end{equation}
+%
+\subsection{Limit Process Expansion, Matching, General Asymptotic Expansions}
+\end{appendices}
+%
+\paragraph{} sqbr
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
