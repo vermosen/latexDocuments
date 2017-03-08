@@ -1,0 +1,390 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         %
+%  document definitions   %
+%                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\documentclass[10pt]{beamer}
+\mode<presentation>
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%          themes         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\usetheme{Malmoe} 				  % beamer styles
+%\usetheme{Warsaw} 				  
+%\usetheme{Berlin} 	
+%\usetheme{Szeged}
+%\usetheme{CambridgeUS}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%        packages         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+%
+\usepackage{tikz}                 % for transparency management
+%
+\usepackage{ragged2e}			  % to redefine beamer default justification
+\usepackage{lipsum}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ugly macro to redefine  %
+%    beamer behaviour     %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\makeatletter
+\renewcommand{\itemize}[1][]{%
+  \beamer@ifempty{#1}{}{\def\beamer@defaultospec{#1}}%
+  \ifnum \@itemdepth >2\relax\@toodeep\else
+    \advance\@itemdepth\@ne
+    \beamer@computepref\@itemdepth% sets \beameritemnestingprefix
+    \usebeamerfont{itemize/enumerate \beameritemnestingprefix body}%
+    \usebeamercolor[fg]{itemize/enumerate \beameritemnestingprefix body}%
+    \usebeamertemplate{itemize/enumerate \beameritemnestingprefix body begin}%
+    \list
+      {\usebeamertemplate{itemize \beameritemnestingprefix item}}
+      {\def\makelabel##1{%
+          {%
+            \hss\llap{{%
+                \usebeamerfont*{itemize \beameritemnestingprefix item}%
+                \usebeamercolor[fg]{itemize \beameritemnestingprefix item}##1}}%
+          }%
+        }%
+      }
+  \fi%
+  \beamer@cramped%
+  \justifying% NEW
+  %\raggedright% ORIGINAL
+  \beamer@firstlineitemizeunskip%
+}
+\makeatother
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%          logo           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%\usebackgroundtemplate{%
+%\tikz\node[opacity=0.25, inner xsep=8cm, inner ysep=5cm]{\includegraphics[height=7 cm]{RU_INF_SEAL_CMYK.eps}};}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%    authors and title    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\title[The State Space Model]{State Space Models\\ An introduction}
+%\subtitle[]{}
+\author[J.M. Vermosen]{Jean-Mathieu Vermosen}
+\institute[Rutgers Univ.]{Rutgers University}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                         %
+%     document body       %
+%                         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\begin{document}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       title frame       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\frame{\maketitle}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  section : introduction %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\section*{Introduction}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       subsection:       %
+%  the state space model  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+\subsection*{Outline}
+%
+% introduction frame
+%
+\begin{frame}{Introduction}{Outline}
+%
+\tableofcontents
+%
+\end{frame}
+%
+\section{The state space model}
+%
+\subsection{A general formulation}
+%
+% Frame 1
+%
+\begin{frame}{The state space model}{A general formulation}
+%
+% remarks : 
+%
+% - y and xi are not assumed to have the same size
+% - H, F, Q, R are the matrix to estimate
+% - equation (1) is the observation equation
+% - equation (2) is the state equation
+% - here H,F,Q,R are time-independent
+%
+\begin{itemize}
+\item The model aim at capturing the dynamics of an observed vector $y_{t}$ in terms of a possibly unobserved vector $\xi_{t}$ of \emph{state variables}.
+%
+\begin{equation}\label{eq:1}
+y_{t} = \mathbf{H}\xi_{t} + w_{t}
+\end{equation}
+%
+\item The state vector $\xi_{t}$ is supposed to follow some dynamics:
+%
+\begin{equation}\label{eq:2}
+\xi_{t} = \mathbf{F}\xi_{t-1} + v_{t}
+\end{equation}
+%
+\item For simplicity, error terms $w_{t}$ and $v_{t}$ are supposed to be i.i.d $N(0,\mathbf{Q})$ and $N(0,\mathbf{R})$ respectively.
+%
+\item the matrix of parameters $\mathbf H, \mathbf F, \mathbf Q$ and $\mathbf R$ might be subject to various constraints.
+\end{itemize}
+%
+\end{frame}
+%
+\subsection{One model to rule them all}
+%
+% Frame 2
+%
+\begin{frame}{The state space model}{One model to rule them all}
+%
+% remarks : 
+%
+% - 
+%
+\begin{itemize}
+%
+\item AR(p), MA(q) or ARMA(p,q) models are special case of the state space model.
+%
+\item Example: Arma(2,2) model has the form
+%
+\begin{equation*}
+y_{t} = \phi_{1}y_{t-1}+\phi_{2}y_{t-2}+\theta_{1}\epsilon_{t-1}+\theta_{2}\epsilon_{t-2} + \epsilon_{t}
+\end{equation*}
+%
+with $\epsilon_{t}\sim N(0,\sigma^{2})$. It can be expressed using state space formulation:
+%
+\begin{align*}
+    \xi_{t} &=
+\left[
+\begin{array}{ccc}
+%\phi_{1} & \phi_{2} & 0 \\
+%1 & 0 & 0 \\
+%0 & 1 & 0 
+\phi_{1} & 1 & 0 \\
+\phi_{2} & 0 & 1 \\
+0 & 0 & 0 
+\end{array}
+\right]\xi_{t-1} + \epsilon_{t}%
+\left[
+\begin{array}{c}
+1\\
+\theta_{1}\\
+\theta_{2}
+\end{array}
+\right]
+%
+&& \text{(state equation)}\\
+    y_{t} &= \left[
+\begin{array}{ccc}
+1 & 0 & 0
+\end{array}
+\right]^{'}
+\xi_{t} && \text{(observation equation)}\\
+\end{align*}
+%
+\end{itemize}
+%
+\end{frame}
+%
+\section{The Kalman filter}
+%
+\subsection{Initial considerations}
+%
+% Frame 3
+%
+\begin{frame}{The Kalman filter}{Initial considerations}
+%
+% remarks : 
+%
+% - Aquick slide to introduce the conditioning argument 
+% - cf. page 3047
+%
+\begin{itemize}
+\item Remember that in the system (\ref{eq:1})-(\ref{eq:2}), one only observes $(y_{1},\ldots,y_{t})$. 
+%
+\item Assume that $\mathbf H, \mathbf F, \mathbf Q$ and $\mathbf R$ are \emph{known}. One could wonder how to calculate an optimal forecast of the value $\xi_{t}$ based on the information contained in $(y_{1}, \ldots, y_{t-1})$.
+%
+\item We need a somehow general probability result. Given two vectors $z_{1}$ and $z_{2}$ that have a joint normal distribution:
+%
+\begin{equation*}
+%
+\left[
+\begin{array}{c}
+z_{1}\\
+z_{2}
+\end{array}
+\right]\sim N\left(
+%
+%
+\left[
+\begin{array}{c}
+\mu_{1}\\
+\mu_{2}
+\end{array}
+\right], 
+%
+\left[
+\begin{array}{cc}
+\Omega_{11} & \Omega_{12}\\
+\Omega_{21} & \Omega_{22}
+\end{array}
+\right]
+%
+\right)
+%
+\end{equation*}
+%
+then the distribution of $z_{2}\vert z_{1}\sim N(m, \Sigma)$ with 
+%
+\begin{eqnarray}\label{eq:3}
+m & = & \mu_{2} + \Omega_{21}\Omega^{-1}_{11}(z_{1}-\mu_{1})\\
+\Sigma & = & \Omega_{22} - \Omega_{21}\Omega_{11}^{-1}\Omega_{12}\nonumber
+\end{eqnarray}
+%
+\end{itemize}
+%
+\end{frame}
+%
+\subsection{Derivation of the Kalman filter}
+%
+% Frame 4
+%
+\begin{frame}{The Kalman filter}{Derivation of the Kalman filter}
+%
+% remarks : 
+%
+% - follows section 2.2 
+% - cf. page 3048
+% - we define the notations but the equations are from the previous slide
+%
+\begin{itemize}
+%
+\item Assume we know the conditional distribution of $\xi_{t}\vert y_{1}, \ldots, y_{t-1}$ is normal with mean $\hat\xi_{t\vert t-1}$ and variance $P_{t\vert t-1}$. 
+%
+\item Combining system (\ref{eq:3}) with the equations (\ref{eq:1}) and (\ref{eq:2}) and given the new observation $y_{t}$, we can push the calculation one step further and find that the forecast of $\xi_{t+1}\vert y_{1}, \ldots, y_{t}\sim N(\hat\xi_{t+1\vert t}, P_{t+1\vert t})$ with
+%
+\begin{eqnarray*}
+\hat\xi_{t+1\vert t} & = & \mathbf F \hat\xi_{t\vert t-1} + \mathbf F P_{t\vert t-1} \mathbf H(\mathbf H^{'}P_{t\vert t-1}\mathbf H + \mathbf R)^{-1}(y_{t} - \mathbf H^{'}\hat\xi_{t\vert t-1})\\
+P_{t+1\vert t} & = & \mathbf F P_{t\vert t-1} \mathbf F^{'} - \mathbf F P_{t\vert t-1}\mathbf H(\mathbf H^{'}P_{t\vert t-1}\mathbf H + \mathbf R)^{-1}\mathbf H^{'}P_{t\vert t-1}\mathbf F^{'} + \mathbf Q
+\end{eqnarray*}
+%
+\end{itemize}
+%
+\end{frame}
+%
+\section{Maximum likelihood estimation}
+%
+% Frame 5
+%
+\begin{frame}{Maximum likelihood estimation}{}
+%
+% remarks : 
+%
+% - follows section 2.2 
+% - cf. page 3048
+% - we define the notations but the equations are from the previous slide
+%
+Denote $\theta$ the vector made of the free parameters included in $\mathbf F, \mathbf Q, \mathbf H$ and $\mathbf R$. The MLE procedure is performed as follow:
+\begin{itemize}
+%
+\item make some initial guess for $\theta$ denoted $\theta^{(0)}$ and use the Kalman filter to compute the sequences $\left\{\hat\xi_{t\vert t-1}(\theta^{(0)})\right\}^{T}_{t=1}$ and $\left\{P_{t\vert t-1}(\theta^{(0)})\right\}^{T}_{t=1}$.
+%
+\item since $y_{t}\vert y_{1},\ldots,y_{t-1},\theta^{(0)}\sim N(\mathbf H^{(0)'}\hat\xi^{(0)}_{t\vert t-1}, \mathbf H^{(0)'}P{(\theta^{(0)})}_{t\vert t-1}\mathbf H^{(0)} + \mathbf R^{(0)})$, the log-likelihood is very easy to obtain (c.f. annex).
+%
+\item Assuming the model is well identified, one can use a numerical algorithm to determine some alternative guess $\theta^{(1)}$ which achieve a better likelihood.
+\item the algorithm stops when a maximum has been reached.
+%
+\end{itemize}
+%
+\end{frame}
+%
+\section*{Annex}
+%
+\begin{frame}{Annex}{Log-likelihood formula for state space model}
+%
+Given a guessed value $\theta^{(0)}$, denote 
+%
+\begin{eqnarray*}
+\mu_{t}^{(0)} & = & \mathbf H^{(0)'}\hat\xi^{(0)}_{t\vert t-1}\\
+\Sigma_{t}^{(0)} & = & \mathbf H^{(0)'}P{(0)}_{t\vert t-1}\mathbf H^{(0)} + \mathbf R^{(0)}
+\end{eqnarray*}
+%
+The log-likelihood of the general state space model can be written
+%
+\begin{eqnarray*}
+\sum_{t=1}^{T}\log f(y_{t}\vert y_{1},\ldots,y_{t-1},\theta^{(0)}) = -\frac{Tn}{2}\log(2\pi) - \frac{1}{2}\sum^{T}_{t=1}\log|\Sigma_{t}^{(0)}|\\
+- \frac{1}{2}\sum^{T}_{t=1}\left[y_{t} - \mu_{t}^{(0)}\right]^{'}\left[\Sigma_{t}^{(0)}\right]^{-1}\left[y_{t} - \mu_{t}^{(0)}\right]
+\end{eqnarray*}
+%
+\end{frame}
+%
+\section*{The Bibliography}
+%
+\begin{frame}{The Bibliography}
+%
+\begin{thebibliography}{9}
+%
+\bibitem{ham_econ}
+  James D. Hamilton,
+  \emph{State-Space Model. Handbook of Econometrics, Chap. 50}.
+  North Holland, 1999.
+%
+%\bibitem{duf_term}
+ % Gregory R. Duffee and Richard H. Stanton,
+  %\emph{Estimation of Dynamic Term Structure Models}.
+  %Quarterly Journal of Finance, Vol. 2, No. 2 (2012).
+%    
+\end{thebibliography}
+%
+\end{frame}
+%
+\end{document}
+%
+% code snippets
+%
+% 1 - test frame with columns
+% 
+%\begin{frame}
+%\begin{columns}
+%   \begin{column}[t]{5cm}
+%   ....
+%   \end{column}
+%   \begin{column}[t]{5cm}
+%   \end{column}
+% \end{columns}
+%\end{frame}
+
+%\begin{itemize}
+%   \item<1-6>    $the risk parity approach$
+%\pause
+%   \item<1-6>  $the data set$
+%\pause
+%   \item<1-6>    $linear regression$
+%\pause
+%   \item<1-6>    $adressing autocorrelation$
+%\pause
+%   \item<1-6>    $Conclusions$
+%\pause
+%   \item<1-6>    $The bibliography$
+%\pause
+%   \item<1-6>    $The bibliography$
+%\end{itemize}
