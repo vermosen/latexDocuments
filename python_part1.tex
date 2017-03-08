@@ -1,0 +1,1001 @@
+% Template for beamer class with section and label examples
+\documentclass{beamer}
+
+\usepackage{adjustbox}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{ragged2e}
+\usepackage{tikz}                 	% transparency
+\usepackage{upquote} 		% Upright quotes for verbatim code
+
+\usepackage[T1]{fontenc}
+% Nicer default font (+ math font) than Computer Modern for most use cases
+\usepackage{mathpazo}
+
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    %\usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line ,
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{1 - Jupyter}
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+%beamer theme and options
+\usetheme{Copenhagen}
+
+\setbeamertemplate{itemize items}[default]
+\setbeamertemplate{enumerate items}[default]
+
+\AtBeginSection[]{
+  \begin{frame}
+  \vfill
+  \centering
+  \begin{beamercolorbox}[sep=8pt,center,shadow=true,rounded=true]{title}
+    \usebeamerfont{title}\insertsectionhead\par%
+  \end{beamercolorbox}
+  \vfill
+  \end{frame}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%          logo                                                                           %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% TODO
+
+% the document
+\begin{document}
+\title{Python Workshop}   
+\author{Jean-Mathieu Vermosen} 
+\date{\today} 
+
+\frame{\titlepage}
+
+\begin{frame}[allowframebreaks]
+\frametitle{Table of contents}
+\tableofcontents[part=1]
+\framebreak
+\tableofcontents[part=2]
+\framebreak
+\tableofcontents[part=3]
+\end{frame}
+
+\part{1}
+\section{A short introduction to Jupyter Notebook} 
+\subsection{The Jupyter Project}
+\frame{
+\frametitle{The Jupyter Project} 
+\justifying
+Jupyter is a spin-off of the iPython project. It could be defined as
+\emph{a command shell for interactive computing in multiple programming
+languages, originally developed for the Python programming language,
+that offers introspection, rich media, shell syntax, tab completion, and
+history.} (wikipedia).
+}
+\subsection{Jupyter Notebook Modes}
+\frame{ 
+\frametitle{Jupyter Notebook Modes} 
+\justifying
+\begin{itemize}
+\item A Jupyter notebook is made of \emph{cells}. Each cell can be displayed in two different modes: \textbf{edition} and \textbf{command}.
+\item You can figure out at any time which mode is activated by looking at the
+color of the selection (green for edition, blue for command mode).
+\item To toggle edit mode, press \textbf{Enter}. To toggle command mode, press
+\textbf{Esc} (or ctrl + m)
+\end{itemize} 
+}
+
+\frame{ 
+A cell displayed in the edition mode...
+%\begin{center}
+%\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{./images/pict_2.png}
+%\end{center}
+}
+
+\frame{
+The same cell when command mode is turned on...
+%\begin{center}
+%\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{./images/pict_1.png}
+%\end{center}
+}
+
+\subsubsection{The Command Mode}\label{the-edit-mode}
+\frame{ 
+\frametitle{The Command Mode} 
+\justifying
+The command mode is used to edit how cells are ordered and to control there behavior.
+Basic edition commands are:
+\begin{itemize}
+\item add/delete cells
+\begin{itemize}
+\item \textbf{a} add a cell above
+\item \textbf{b} add a cell below
+\item \textbf{d,d} add a cell below
+\end{itemize}
+\item copy/paste
+\begin{itemize}
+\item \textbf{c} copy
+\item \textbf{x} cut
+\item \textbf{v} past below selection
+\item \textbf{shift + v} past above selection
+\end{itemize}
+\end{itemize}
+}
+
+\frame{ 
+\frametitle{The Command Mode} 
+\justifying
+Basic notebooks are composed of \textbf{cells} that may be of \textbf{two
+kinds}: \emph{markdown} or \emph{code}.
+\begin{itemize}
+\item \textbf{Markdown cells} embed
+rich text features with a simplified syntax close to HTML (as opposed to
+WYSIWYG \footnote{What you see is what you get} approaches). 
+\item \textbf{Code cells} contain code that can be run from the current kernel (Python in our case)
+\end{itemize}
+Cells have to be specifically switched from one mode into another by the user
+\begin{itemize}
+\item \textbf{y} turns a markdown cell into a code cell
+\item \textbf{m} turns a code cell in a markdown cell
+\end{itemize}
+}
+
+\subsubsection{The Edition Mode}\label{the-edition-mode}
+
+\frame{ 
+\frametitle{The Edition Mode} 
+\justifying
+The edition mode is used to edit the \textbf{cells content}. The cells are
+composed of unformatted text blocks from possibly several languages. The
+usual text editor shortcut applies (cut, copy, paste, tab). Once a cell
+has been edited, it can be "Executed" from the interface or using the key
+combinaison \textbf{Shift + Enter}
+}
+
+\subsection{Notebook Cell Structure}
+
+\frame{ 
+\frametitle{Notebook Cell Structure} 
+\justifying
+Jupyter cells behavior and content depends of their nature. 
+\begin{itemize}
+\item The \textbf{Markdown cells} embed rich format features. 
+\item The \textbf{code cells} are set to interact with a specific kernel by executing code commands.
+\end{itemize}
+}
+
+\subsubsection{Markdown Cells}
+\frame{ 
+\frametitle{Markdown Cells} 
+\justifying
+The cells can contain many rich features such as:
+\begin{itemize}
+\item Titles, \emph{formatted} \textbf{text}
+\item
+  Lists
+ \item Hyperlinks: \textcolor{blue}{\href{https://en.wikipedia.org/wiki/IPython}{wikipedia}}
+\item Alerts
+\begin{exampleblock}{Well Done !}
+\end{exampleblock}
+\item images, videos, gifs, blockquotes, etc.
+\end{itemize}
+"Running" a markdown cell will only gathered the objects contained and apply the formatting, so there is no risk to trigger any computation or change.
+}
+
+
+\subsubsection{Latex Rendering}
+
+\frame{ 
+\frametitle{Latex Rendering} 
+\justifying
+Mathematical notations are supported through
+\href{https://www.mathjax.org/}{MathJax} which is a browser-specific
+implementation of \LaTeX. Being a subproject of the latter, not all of the
+packages are supported, but it will provide a pretty good coverage of
+the main rendering classes. Equations can be inserted in the body of the
+document using $\$$. For example,
+$\oint_C \frac {f \left({z}\right)} {z - z_0} \ \mathrm d z = 2 i \pi f \left({z_0}\right)$
+or create a block using $\$\$$
+\begin{equation}
+  \int_0^\infty \frac{x^3}{e^x-1}\,dx = \frac{\pi^4}{15}
+\end{equation}
+the main \LaTeX modes are supporter such as tabular, eqnarray, etc.
+}
+
+\subsubsection{Code Cells}
+\frame{ 
+\frametitle{Code Cells} 
+\justifying
+Code cells contain... code ! For those cells, pressing Shift + Enter triggers the execution in the
+runtime and the output will display below the cell.
+\\~\\ Originally, iPython only supported a
+Python runtime. The original Jupyter project widen the scope to 2
+additional interpreted languages: Julia and R
+(\textbf{JuPy}te\textbf{R}).The current tool supports 40 languages
+including compiled one such as C++ and Fortran.
+}
+
+\begin{frame}[fragile]
+The following code cell
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{} a first example in Python}
+        \PY{k+kn}{from} \PY{n+nn}{matplotlib} \PY{k+kn}{import} \PY{n}{pyplot} \PY{k}{as} \PY{n}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+        
+        \PY{n}{X} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{linspace}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{256}\PY{p}{)}
+        \PY{n}{S} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{sin}\PY{p}{(}\PY{n}{X}\PY{p}{)}
+        
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{X}\PY{p}{,} \PY{n}{S}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{title}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{y=sin(x)}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\subsubsection{Code Cells}
+\frame{ 
+Hitting \textbf{Shift+enter} will trigger the execution of the background runtime:
+%\begin{center}
+%\adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{./images/1 - Jupyter_6_0.png}
+%\end{center}
+{ \hspace*{\fill} \\}
+}
+
+\subsection{Jupyter Magic Commands}
+
+\frame{ 
+\frametitle{Jupyter Magic Commands} 
+\justifying
+As part of the Jupyter framework, there are useful commands that can be
+run in code cells to handle specific actions along the code.
+\\~\\
+Magic commands \textbf{have to be inserted in code cells}. They are not
+specific to any language and won't be sent to the iPython kernel. Hence,
+they \textbf{won't interfere with the program executed}.
+}
+
+\frame{ 
+\frametitle{General Purpose Functions} 
+\textbf{\%quickref}, \textbf{\%lsmagic}, \textbf{\%magic} Gives help on the magic commands
+}
+
+\frame{ 
+\frametitle{Environment commands} 
+\begin{itemize}
+\item
+\textbf{\%reset {[}-f{]}} Resets the notebook variables. The -f option suppress the prompt
+\item
+\textbf{\%cd} changes the current directory
+\item
+\textbf{\%env} add an environment variable
+\textbf{\%notebook} Save the code contained in the notebook as a standalone file
+\end{itemize}
+}
+
+\frame{ 
+\frametitle{Debugging} 
+\begin{itemize}
+\item
+\textbf{\%time} Print the execution time of a given cell
+\item
+\textbf{\%debug} Launch the debugger
+\item
+\textbf{\%pdb} Control the way the interactive debugger can be called.
+  For instance \textbf{\%pdb on} will trigger the debugger as soon as an exception
+  has been thrown.
+\end{itemize}
+}
+
+\part{2}
+\section{ The Python Programming Language}
+\subsection{A few words about Python}
+\frame{ 
+\justifying
+\frametitle{A foreword on Python} 
+Python is a high-level programming language used for general-purpose
+programming, originally released by Guido van Rossum in 1991. An
+interpreted language, Python has a design philosophy which emphasizes
+\textbf{code readability}, and a syntax which allows programmers to
+express concepts in \textbf{fewer lines of code} than possible in
+languages.
+\\~\\
+Python has been widely adopted in the scientific community and the
+financial industry. Hence, a large number of open-source libraries can
+handle a wide variety of \textbf{statistical} and \textbf{numerical}
+computation. It also offers a large choice of tools to bind existing
+libraries.
+}
+
+\frame{
+\justifying
+Python comes in \textbf{two major versions}: 2.7 and 3.x (currently
+3.6). The later, released in December 2008, introduced breaking changes
+which required to rewrite most of the libraries. Hence, two versions
+have been maintained and major libraries have been slowly ported in the
+new language variant. 
+\\~\\
+The 2.7 branch is still \textbf{actively maintained} since the major language developements have been implemented
+in both branches and potential bugs will be fixed until 2020. For these
+reasons, Python 2.7 remains the version which is still mainly used in a
+professional setup.
+}
+ 
+\subsection{The language syntax}
+\subsubsection{Variables and assignement}
+\frame{ 
+\justifying
+\frametitle{Variables and assignement} 
+Variables in python are declared using the \textbf{assignement operator
+=} (like in many programming languages). However, \textbf{variables are
+never explicitely typed} and are always deduced at runtime from the
+current context. Python variables do have a type which can be retrieved
+using the \emph{type()} operator.
+}
+
+\begin{frame}[fragile]
+\justifying
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} variable declaration}
+\PY{n}{i} \PY{o}{=} \PY{l+m+mi}{5}
+\PY{n}{j} \PY{o}{=} \PY{l+m+mf}{5.0}
+\PY{n}{k} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{5}\PY{l+s+s1}{\PYZsq{}}
+        
+\PY{k}{print}\PY{p}{(}\PY{n+nb}{type}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{,} \PY{n+nb}{type}\PY{p}{(}\PY{n}{j}\PY{p}{)}\PY{p}{,} \PY{n+nb}{type}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+output:
+\begin{Verbatim}[commandchars=\\\{\}]
+(<type 'int'>, <type 'float'>, <type 'str'>)
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+Combining variables of different types may be a source of confusion:
+when permitted, Python will try to \textbf{cast} one of the variable to make an
+operation valid. This is not always possible. The following code
+    \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} this works}
+\PY{n}{l} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{n}{j} 
+\PY{k}{print}\PY{p}{(}\PY{n}{l}\PY{p}{,} \PY{n+nb}{type}\PY{p}{(}\PY{n}{l}\PY{p}{)}\PY{p}{)}
+        
+\PY{c+c1}{\PYZsh{} this will create a runtime error}
+\PY{n}{m} \PY{o}{=} \PY{n}{l} \PY{o}{+} \PY{n}{k}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+output: 
+\begin{Verbatim}[commandchars=\\\{\}]
+(10.0, <type 'float'>)
+
+------------------------------------------------------
+TypeErro     Traceback (most recent call last)
+
+<ipython-input-8-335ccc39b24b> in <module>()
+4 
+5 \# this will create a runtime error
+----> 6 m = l + k
+TypeError: unsupported operand type(s) for +: 
+'float' and 'str'
+    \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+ In some case, an explicit cast might be needed to get the desired
+result:
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} this will work}
+\PY{n}{right} \PY{o}{=} \PY{n}{l} \PY{o}{+} \PY{n+nb}{int}\PY{p}{(}\PY{n}{k}\PY{p}{)}
+\PY{k}{print}\PY{p}{(}\PY{n}{right}\PY{p}{)}
+        
+\PY{c+c1}{\PYZsh{} beware of confusions !}
+\PY{n}{wrong} \PY{o}{=} \PY{n}{k} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+\PY{k}{print}\PY{p}{(}\PY{n}{wrong}\PY{p}{)}
+\end{Verbatim}
+output: 
+    \begin{Verbatim}[commandchars=\\\{\}]
+15.0
+510.0
+    \end{Verbatim}
+\end{frame}
+
+\subsubsection{Statements}
+\begin{frame}[fragile]
+\frametitle{Statements} 
+\justifying
+Python statements can be terminated in two ways. They are either
+\textbf{carriage return} terminated, e.g. the statement ends at the end
+of the line, but they can also be terminated by semicolon (;), which
+allows multiple statement on the same line. The second syntax is rarely
+used. 
+\\~\\
+The sharp (\#) sign allows one to insert \emph{comments}. Anytime
+such a sign is hit, what follows one the same line will be totally
+ignored.
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+    \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} This is a valid statement}
+\PY{n}{a} \PY{o}{=} \PY{l+m+mi}{1}
+         
+\PY{n}{b} \PY{o}{=} \PY{l+m+mi}{2}      \PY{c+c1}{\PYZsh{} this is another valid statement}
+         
+\PY{c+c1}{\PYZsh{} this one will not be executed \PYZhy{}\PYZgt{} c = a + b}
+         
+\PY{c+c1}{\PYZsh{} we may also use semicolons to write}
+\PY{c+c1}{\PYZsh{} a more compact code, but you should avoid it}
+\PY{n}{c} \PY{o}{=} \PY{n}{a} \PY{o}{+} \PY{n}{b}\PY{p}{;} \PY{n}{d} \PY{o}{=} \PY{n}{c} \PY{o}{+} \PY{l+m+mi}{3}
+\end{Verbatim}
+\end{frame}
+
+\subsubsection{Block Intendation}\label{block-intendation}
+
+\begin{frame}[fragile]
+\frametitle{Block Intendation} 
+\justifying
+Python use \textbf{whitespace indentation} to delimit blocks, rather
+than curly braces like in C or keywords as in VBA.
+\begin{itemize}
+\item An \textbf{increase} in
+indentation comes after certain statements
+\item a \textbf{decrease} in
+indentation signifies the \emph{end of the current block}
+\end{itemize}
+
+One of the simpliest block structure is a \textbf{try - except block}
+which can be used to \emph{resume a program after an error occurs}.
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+    \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} my first try\PYZhy{}except }
+\PY{n}{i} \PY{o}{=} \PY{l+m+mi}{5}; \PY{n}{j} \PY{o}{=} \PY{l+m+mf}{5.0}
+        
+\PY{k}{try}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} the \PYZsq{}try\PYZsq{} block starts here}
+    \PY{n}{k} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{5}\PY{l+s+s1}{\PYZsq{}}
+    \PY{k}{print}\PY{p}{(}\PY{n}{i} \PY{o}{+} \PY{n}{j}\PY{p}{)}
+    \PY{k}{print}\PY{p}{(}\PY{n}{i} \PY{o}{+} \PY{n}{k}\PY{p}{)}
+    \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{success}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{except}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} this new block will capture any}
+    \PY{c+c1}{\PYZsh{} exception from the block above}
+    \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{...silence...}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        
+\PY{c+c1}{\PYZsh{} but this is no longer in the try block...}
+\PY{k}{print}\PY{p}{(}\PY{n}{i} \PY{o}{+} \PY{n}{k}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+\begin{frame}[fragile]
+\justifying
+output: 
+ \begin{Verbatim}[commandchars=\\\{\}]
+10.0
+{\ldots}silence{\ldots}
+
+---------------------------------------------------------------------------
+
+TypeError         Traceback (most recent call last)
+
+<ipython-input-4-57c7a9612f99> in <module>()
+14 
+15 \# but this is no longer in the try block{\ldots}
+---> 16 print(i + k)
+    
+TypeError: unsupported operand type(s) for +: 
+'int' and 'str'
+    \end{Verbatim}
+\end{frame}
+
+\subsubsection{Functions and flow
+controls}\label{functions-and-flow-controls}
+
+\begin{frame}[fragile]
+\frametitle{Functions and flow controls} 
+\justifying
+\textbf{flow controls} are structure to introduce conditions on the
+execution of the code. Python implements the most common statements is a
+compact way. 
+\\~\\
+The most usefull flow statements are 
+\begin{itemize}
+\item \textbf{if...else}
+\item a \textbf{for}
+\item a \textbf{while}
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+\frametitle{The if - else statement} 
+    \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} a simple if statement:}
+\PY{n}{i} \PY{o}{=} \PY{n+nb+bp}{True}
+         
+\PY{c+c1}{\PYZsh{} notice the == (comparison operator)}
+\PY{k}{if} \PY{n}{i} \PY{o}{==} \PY{n+nb+bp}{True}\PY{p}{:}                              
+    \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{this is True}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{else}\PY{p}{:}
+    \PY{k}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{this is False}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+output: 
+    \begin{Verbatim}[commandchars=\\\{\}]
+this is True
+
+    \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+\frametitle{The for statement} 
+    \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} the classical for loop:}
+\PY{n}{factorial} \PY{o}{=} \PY{l+m+mi}{1}
+         
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+    \PY{n}{factorial} \PY{o}{=} \PY{n}{factorial} \PY{o}{*} \PY{n}{i} 
+         
+\PY{c+c1}{\PYZsh{} this is 9!}
+\PY{k}{print}\PY{p}{(}\PY{n}{factorial}\PY{p}{)}                                
+\end{Verbatim}
+output: 
+    \begin{Verbatim}[commandchars=\\\{\}]
+362880
+
+    \end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+\frametitle{The while statement} 
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} the while loop}
+\PY{n}{condition} \PY{o}{=} \PY{n+nb+bp}{True}
+\PY{n}{i} \PY{o}{=} \PY{l+m+mi}{0}
+\PY{k}{while} \PY{p}{(}\PY{n}{condition}\PY{p}{)}\PY{p}{:}
+    \PY{n}{i} \PY{o}{=} \PY{n}{i} \PY{o}{+} \PY{l+m+mi}{1}
+             
+    \PY{k}{if} \PY{p}{(}\PY{n}{i} \PY{o}{\PYZgt{}}\PY{o}{=} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{:}
+        \PY{n}{condition}  \PY{o}{=} \PY{n+nb+bp}{False}
+         
+\PY{k}{print}\PY{p}{(}\PY{n}{i}\PY{p}{)}
+\end{Verbatim}
+output:
+    \begin{Verbatim}[commandchars=\\\{\}]
+10
+    \end{Verbatim}
+\end{frame}
+
+\begin{frame}
+\justifying
+\textbf{Functions} are defined using the \textbf{def} keyword and
+\textbf{whitespace indentation} as defined above. 
+\\~\\
+Following the Python approach, function arguments are not explicitely typed, so their
+behavior can be fairly affected by the arguments passed. It is however
+very common to control variable types or values inside the function
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+    \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} my first function}
+\PY{k}{def} \PY{n+nf}{add}\PY{p}{(}\PY{n}{i}\PY{p}{,} \PY{n}{j}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{n+nb}{type}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{o}{!=} \PY{n+nb}{type}\PY{p}{(}\PY{n}{j}\PY{p}{)}\PY{p}{:}
+        \PY{k}{return} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{the operation cannot be done !}\PY{l+s+s1}{\PYZsq{}}
+    \PY{k}{return} \PY{n}{i} \PY{o}{+} \PY{n}{j}
+
+\PY{n}{res1} \PY{o}{=} \PY{n}{add}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}    \PY{c+c1}{\PYZsh{} adds...}
+\PY{k}{print}\PY{p}{(}\PY{n}{res1}\PY{p}{)}
+         
+\PY{n}{res2} \PY{o}{=} \PY{n}{add}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{a}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{b}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    \PY{c+c1}{\PYZsh{} ...or concatenates}
+\PY{k}{print}\PY{p}{(}\PY{n}{res2}\PY{p}{)}
+         
+\PY{c+c1}{\PYZsh{} Wait... What should we do here ?}
+\PY{n}{res3} \PY{o}{=} \PY{n}{add}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{1}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{)}
+\PY{k}{print}\PY{p}{(}\PY{n}{res3}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+output:
+     \begin{Verbatim}[commandchars=\\\{\}]
+5
+ab
+the operation cannot be done !
+
+    \end{Verbatim}
+\end{frame}
+
+\subsection{Data Structure}
+\begin{frame}
+\justifying
+\frametitle{Data Structure} 
+Python knows a number of compound data types, used to group values together in some logical way. 
+\\~\\ 
+Any data structure (or container) is designed to organize data to suit a specific purpose so that it can be accessed and worked with in appropriate ways.
+\\~\\ 
+We'll introduce 3 basic data structures
+\begin{itemize}
+\item List
+\item Tuple
+\item Dictionary
+\end{itemize}
+\end{frame}
+
+\subsubsection{List}
+\begin{frame}
+\justifying
+\frametitle{List} 
+The most versatile data container is the \textbf{list},
+which can be written as a list of comma-separated values (items) between
+\textbf{square brackets}: 
+\begin{itemize}
+\item list elements are indexed by a 0-based integer,
+thus they can be \textbf{accessed randomly} (we can access immediately any
+ element)
+\item Lists might contain items of different types, but usually the items all have the same type.
+\item Python comes with some usefull default list function, such as \textbf{range}. It also features 
+\textbf{list comprehesions} to dramatically simplify list operations.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\justifying
+\frametitle{List} 
+The most versatile data container is the \textbf{list},
+which can be written as a list of comma-separated values (items) between
+\textbf{square brackets}: 
+\begin{itemize}
+\item list elements are indexed by a 0-based integer,
+thus they can be \textbf{accessed randomly} (we can access immediately any
+ element)
+\item Lists might contain items of different types, but usually the items all have the same type.
+\item Python comes with some usefull default list function, such as \textbf{range}. It also features 
+\textbf{list comprehesions} to dramatically simplify list operations.
+\end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+    \begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} a basic list declaration}
+\PY{n}{l} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{20}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{5}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}
+\PY{k}{print}\PY{p}{(}\PY{n}{l}\PY{p}{)}
+         
+\PY{c+c1}{\PYZsh{} accessing the elements of the list is easy}
+\PY{k}{print}\PY{p}{(}\PY{n}{l}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{)}
+         
+\PY{c+c1}{\PYZsh{} range, notice the exclusion of the last element !}
+\PY{n}{r} \PY{o}{=} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\PY{k}{print}\PY{p}{(}\PY{n}{r}\PY{p}{)}
+         
+\PY{c+c1}{\PYZsh{} how list comprehension works}
+\PY{n}{square} \PY{o}{=} \PY{p}{[}\PY{n}{x} \PY{o}{*} \PY{n}{x} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{r}\PY{p}{]}
+\PY{k}{print}\PY{p}{(}\PY{n}{square}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+output:
+    \begin{Verbatim}[commandchars=\\\{\}]
+[10, 20, 5, -5, 10]
+10
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+    \end{Verbatim}
+\end{frame}
+
+\subsubsection{Tuple}
+\begin{frame}
+\justifying
+\frametitle{Tuple} 
+Tuple is another traditional container. It represent a group of
+logically dependant elements. The difference with the list is that there
+are \textbf{immutable}, e.g. once allocated, they cannot be modified nor
+appended. 
+\\~\\
+Operations on Tuple can be performed by mapping there elements
+using the \textbf{zip} statement
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{xyz} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{2.0}\PY{p}{,} \PY{l+m+mf}{1.7}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{2.0}\PY{p}{)}
+\PY{n}{abc} \PY{o}{=} \PY{p}{(}\PY{l+m+mf}{1.4}\PY{p}{,} \PY{l+m+mf}{3.6}\PY{p}{,} \PY{l+m+mf}{2.2}\PY{p}{)}
+         
+\PY{c+c1}{\PYZsh{} we can retrieve elements}
+\PY{k}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{x: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{xyz}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+         
+\PY{c+c1}{\PYZsh{} simple coordinate manipulation}
+\PY{n}{center} \PY{o}{=} \PY{p}{[}\PY{n+nb}{sum}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{o}{/} \PY{l+m+mi}{2} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{xyz}\PY{p}{,} \PY{n}{abc}\PY{p}{)}\PY{p}{]}
+\PY{k}{print}\PY{p}{(}\PY{n}{center}\PY{p}{)}
+         
+\PY{c+c1}{\PYZsh{} violates immutability !}
+\PY{n}{xyz}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.0}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+output:
+    \begin{Verbatim}[commandchars=\\\{\}]
+---------------------------------------------
+
+TypeError           Traceback (most recent call last)
+
+<ipython-input-32-c6e69ed4e115> in <module>()
+10 
+11 \# violates immutability !
+---> 12 xyz[0] = -1.0
+    
+
+TypeError: 'tuple' object does not support item 
+assignment
+    \end{Verbatim}
+\end{frame}
+
+\subsubsection{dictionary}
+\begin{frame}
+\justifying
+\frametitle{Dictionary} 
+In many cases, list are unsuitable to retrieve elements (from a logical
+or performance point-of-view). 
+This last container maps a list of 'keys' to another list of 'values'.
+\\~\\ Dictionaries keeps the elements
+\textbf{sorted} at all time. However, the keys have to be \textbf{unique}. They
+can be strings, number or \textbf{Tuples}.
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{age} \PY{o}{=} \PY{p}{\PYZob{}}
+\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{John}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Doe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    \PY{p}{:} \PY{l+m+mi}{25}\PY{p}{,}
+\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Jane}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Smith}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}  \PY{p}{:} \PY{l+m+mi}{27}\PY{p}{,}
+\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Jack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Morgan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)} \PY{p}{:} \PY{l+m+mi}{25}\PY{p}{,}
+\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{John}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Doe}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}    \PY{p}{:} \PY{l+m+mi}{24}       \PY{c+c1}{\PYZsh{} bad}
+\PY{p}{\PYZcb{}}
+        
+\PY{k}{print}\PY{p}{(}\PY{n}{age}\PY{p}{)}
+        
+\PY{n}{key} \PY{o}{=} \PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Jack}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Morgan}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{k}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{ \PYZob{}0\PYZcb{} \PYZob{}1\PYZcb{} is \PYZob{}2\PYZcb{} years}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}
+	\PY{n}{key}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{key}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{age}\PY{p}{[}\PY{n}{key}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+\justifying
+output:
+\begin{Verbatim}[commandchars=\\\{\}]
+\{  
+  ('Jack', 'Morgan'): 25
+, ('John', 'Doe'): 24
+, ('Jane', 'Smith'): 27
+\}
+
+ Jack Morgan is 25 years
+\end{Verbatim}
+\end{frame}
+\end{document}
