@@ -57,7 +57,7 @@ Then the function $p(T, F, S)$ satisfies the Forward Kolmogorov Equation
 %
 with 
 \begin{equation}
-p = \delta(F-f)\delta(S-s), t = T
+p = \partial(F-f)\partial(S-s), t = T
 \end{equation}
 %
 The value of an option with payoff $\Pi(f, s, t)$ is given by 
@@ -97,8 +97,8 @@ Write your conclusion here.
 %
 \section{Perturbation method}
 %
-\paragraph{The Landau notation} Let $\phi, \psi$ two function defined on $D$. Let $x\in D$ be fixed. We say $\phi\lll\psi$ as $\epsilon\rightarrow\epsilon_0$ if given any $\delta(x)>0$, there exists a neighborhood $N_\delta\in\mathcal O(\epsilon_0)$ such that $|\phi|\leq\delta(x)|\psi|$ for all $\epsilon\in N_\delta$.
-\paragraph{} If the values $\delta, N_\delta$ can be found independently of the value of $x$, we say that the order relation holds \emph{uniformly in $D$}.
+\paragraph{The Landau notation} Let $\phi, \psi$ two function defined on $D$. Let $x\in D$ be fixed. We say $\phi\lll\psi$ as $\epsilon\rightarrow\epsilon_0$ if given any $\partial(x)>0$, there exists a neighborhood $N_\partial\in\mathcal O(\epsilon_0)$ such that $|\phi|\leq\partial(x)|\psi|$ for all $\epsilon\in N_\partial$.
+\paragraph{} If the values $\partial, N_\partial$ can be found independently of the value of $x$, we say that the order relation holds \emph{uniformly in $D$}.
 %
 \subsection{Asymptotic sequences and expansions}
 \paragraph{} Consider a sequence $\{\phi_n(\epsilon)\}, n=1, 2, \ldots$ of function of $\epsilon$. Such a sequence is called asymptotic if
@@ -198,7 +198,95 @@ Therefore
 \subsection{Limit Process Expansion, Matching, General Asymptotic Expansions}
 \end{appendices}
 %
-\paragraph{} sqbr
+\paragraph{} ....
+%
+\section{The Fokker-Planck Equation} 
+%
+\subsection{Derivation}
+%
+\paragraph{} Starting from a generall SDE defined by
+%
+\begin{equation}
+dX_t=\mu(X_t)dt + \sigma(X_t)dW_t
+\end{equation}
+%
+we define the \emph{transition density} by:
+%
+\begin{eqnarray}
+%
+\int_A\rho(x, t\vert y, s)dx & = & \mathbb{P}[X_{t+s}\in A\vert X_s = y]\nonumber\\
+& = & \mathbb{P}[X_t\in A\vert X_0 = y]
+%
+\end{eqnarray}
+%
+the second equality being a consequence of the Markov property of the process $\left\{X_t\right\}_{t\in T}$.
+%
+\paragraph{} Consider a test function $V(x, t)\in\mathcal C^{2, 1}(\mathbb R^2)$ such that $V(x, t)> 0$ for$t\in (0, T)$ and $V(X_t, t) = 0$ for $t\notin (0, T)$. Then by Ito's lemma
+%
+\begin{equation}
+V(X_T, T) - V(X_0, 0) = \int^T_0 \frac{\partial V}{\partial t} + \mu\frac{\partial V}{\partial x} + \frac{1}{2}\sigma^2\frac{\partial^2 V}{\partial x^2}dt + \int^T_0\sigma\frac{\partial V}{\partial x}dW_t = 0
+\end{equation}
+%
+where $\mu\equiv\mu(X_t)$ and $\sigma\equiv\sigma(X_t)$. Taking the expectation in $t=0$ yield
+%
+\begin{eqnarray}
+%
+\mathbb E_0[V(X_T, T)] & = & \mathbb E_0 \int^T_0 \frac{\partial V}{\partial t} + \mu\frac{\partial V}{\partial x} + \frac{1}{2}\sigma^2\frac{\partial^2 V}{\partial x^2}dt\\
+& = & \int_\mathbb R\left\{\int^T_0 \frac{\partial V}{\partial t} + \mu\frac{\partial V}{\partial x} + \frac{1}{2}\sigma^2\frac{\partial^2 V}{\partial x^2}dt\right\}\rho(x, t\vert y, s)dx
+%
+\end{eqnarray}
+%
+which,  can be rewritten as
+%
+\begin{equation}\label{fokker:part}
+\int_\mathbb R\int^T_0 \rho\frac{\partial V}{\partial t}dtdx + \int_\mathbb R\int^T_0 \rho\mu\frac{\partial V}{\partial x}dtdx + \frac{1}{2}\int_\mathbb R\int^T_0 \rho\sigma^2\frac{\partial^2 V}{\partial x^2}dtdx = 0
+\end{equation}
+%
+\paragraph{} We now use integration by part on each components of [\ref{fokker:part}]:
+\begin{itemize}
+\item using $u=\rho$ and $v'=\frac{\partial\rho}{\partial t}$, we have
+%
+\begin{equation}\label{fokker:p1}
+\int^T_0\rho\frac{\partial V}{\partial t}dt = \left[\rho V\right]^T_0 - \int^T_0\frac{\partial\rho}{\partial t}V dt = - \int^T_0\frac{\partial\rho}{\partial t}V dt
+\end{equation}
+%
+\item changing the order of integration and using $u=\rho\mu$, $v'=\frac{\partial V}{\partial x}$, we have
+%
+\begin{eqnarray}\label{fokker:p2}
+\int_\mathbb R\int^T_0 \rho\mu\frac{\partial V}{\partial x}dtdx & = & \int^T_0 \left[\rho\mu V\right]_\mathbb R - \int_\mathbb R\frac{\partial(\rho\mu)}{\partial x}V dx\nonumber\\
+& = & -\int_\mathbb R\int^T_0\frac{\partial(\rho\mu)}{\partial x}dtdx
+\end{eqnarray}
+%
+\item for the last piece, we need to integrate by part twice to get rid of the partial derivatives of $V$. Changing the order of integration, one obtains
+%
+\begin{eqnarray}
+\frac{1}{2}\int_\mathbb R\int^T_0 \rho\sigma^2\frac{\partial^2 V}{\partial x^2}dtdx & = & \frac{1}{2}\int^T_0 \left[\rho\sigma^2 \frac{\partial V}{\partial x}V\right]_\mathbb R - \int_\mathbb R\frac{\partial(\rho\sigma^2)}{\partial x}\frac{\partial V}{\partial x} dx\nonumber\\
+& = & -\frac{1}{2}\int^T_0\int_\mathbb R\frac{\partial (\rho\sigma^2)}{\partial x}\frac{\partial V}{\partial x}dxdt
+\end{eqnarray}
+%
+then integrating by part again with $u=\frac{\partial(\rho\sigma^2)}{\partial x}\frac{\partial V}{\partial x}dx, v'=\frac{\partial V}{\partial x}$, 
+%
+\begin{eqnarray}\label{fokker:p3}
+\frac{1}{2}\int_\mathbb R\int^T_0 \rho\sigma^2\frac{\partial^2 V}{\partial x^2}dtdx & = & -\frac{1}{2}\int^T_0 \left[\frac{\partial(\rho\sigma^2)}{\partial x}V \right]_\mathbb R dt + \frac{1}{2}\int^T_0\int_\mathbb R\frac{\partial ^2(\rho\sigma^2)}{\partial x^2}V dxdt\nonumber\\
+& = & \frac{1}{2}\int_\mathbb R\int^T_0\frac{\partial ^2(\rho\sigma^2)}{\partial x^2}V(x, t) dtdx
+\end{eqnarray}
+%
+\end{itemize}
+%
+\paragraph{} Plugging [\ref{fokker:p1}], [\ref{fokker:p2}] and [\ref{fokker:p2}] back into [\ref{fokker:part}], one get the equality
+%
+\begin{equation}
+\int_\mathbb R\int^T_0 V(x, t)\left[-\frac{\partial \rho}{\partial t}-\frac{\partial (\rho\mu)}{\partial x}+\frac{1}{2}\frac{\partial^2(\rho\sigma^2)}{\partial x^2}\right]dtdx = 0
+\end{equation}
+%
+and since $V(X_t, t)> 0$ on $(0, T)$, this imply the \emph{Fokker-Planck equation}
+%
+\begin{equation}
+\frac{\partial\rho}{\partial t} = -\frac{\partial(\rho\mu)}{\partial x} + \frac{1}{2}\frac{\partial^2 (\rho\sigma^2)}{\partial x^2}
+\end{equation}
+%
+\subsection{Example}
+%
 \end{document}
 
 
